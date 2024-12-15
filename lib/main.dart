@@ -27,7 +27,7 @@ class UniHubApp extends StatelessWidget {
         primarySwatch: Colors.blue,
         visualDensity: VisualDensity.adaptivePlatformDensity,
       ),
-      initialRoute: '/welcome',
+      initialRoute: '/adminPanel',
       routes: {
         '/welcome': (context) => WelcomePage(),
         '/signup': (context) => SignUpPage(),
