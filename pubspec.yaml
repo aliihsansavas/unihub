@@ -4,7 +4,7 @@ description: "A new Flutter project."
 flutter_icons:
   android: true
   ios: true
-  image_path: assets/logo.png
+  image_path: assets/light_mode.png
 
 publish_to: 'none'
 
@@ -27,5 +27,6 @@ dev_dependencies:
 
 flutter:
   assets:
-    - assets/logo.png 
+    - assets/light_mode.png
+    - assets/dark_mode.png
   uses-material-design: true 

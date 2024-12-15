@@ -16,20 +16,31 @@ import 'pages/admin_panel.dart';
 void main() {
   runApp(UniHubApp());
 }
-
-class UniHubApp extends StatelessWidget {
+class UniHubApp extends StatefulWidget {
   @override
+  _UniHubAppState createState() => _UniHubAppState();
+}
+
+class _UniHubAppState extends State<UniHubApp> {
+  ThemeMode _themeMode = ThemeMode.light;
+
+  void _toggleTheme(bool isDarkMode) {
+    setState(() {
+      _themeMode = isDarkMode ? ThemeMode.dark : ThemeMode.light;
+    });
+  }
+
+@override
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'UniHub',
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
-        visualDensity: VisualDensity.adaptivePlatformDensity,
-      ),
+      theme: ThemeData.light(),
+      darkTheme: ThemeData.dark(),
+      themeMode: _themeMode,
       initialRoute: '/welcome',
       routes: {
-        '/welcome': (context) => WelcomePage(),
+        '/welcome': (context) => WelcomePage(onThemeToggle: _toggleTheme),
         '/signup': (context) => SignUpPage(),
         '/login': (context) => LoginPage(),
         '/home': (context) => HomePage(),
