@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "381691973407",
+    "project_id": "unihub-290c5",
+    "storage_bucket": "unihub-290c5.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:381691973407:android:5a471dfa44949a5b7bea2a",
+        "android_client_info": {
+          "package_name": "com.example.unihub"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA0wi2u4ZYi-X9nNt96S-CGUqwr4QQsn60"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -10,8 +10,8 @@ android {
     ndkVersion = flutter.ndkVersion
 
     compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_1_8
-        targetCompatibility = JavaVersion.VERSION_1_8
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
     }
 
     kotlinOptions {
@@ -36,3 +36,11 @@ android {
 flutter {
     source = "../.."
 }
+
+dependencies {
+    // Firebase Authentication ve Firestore bağımlılıklarını ekleyin
+    implementation 'com.google.firebase:firebase-auth:21.0.5'  
+    implementation 'com.google.firebase:firebase-firestore:24.3.0'
+}
+
+apply plugin: 'com.google.gms.google-services'  // Firebase plugin'i
