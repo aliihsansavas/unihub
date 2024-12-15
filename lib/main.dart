@@ -27,7 +27,7 @@ class UniHubApp extends StatelessWidget {
         primarySwatch: Colors.blue,
         visualDensity: VisualDensity.adaptivePlatformDensity,
       ),
-      initialRoute: '/welcome',
+      initialRoute: '/profile',
       routes: {
         '/welcome': (context) => WelcomePage(),
         '/signup': (context) => SignUpPage(),
@@ -36,7 +36,7 @@ class UniHubApp extends StatelessWidget {
         '/communities': (context) => CommunitiesPage(),
         '/communityDetails': (context) => CommunityDetailsPage(),
         '/events': (context) => EventsPage(),
-        '/profile': (context) => ProfilePage(),
+        '/profile': (context) => ProfilePage(userId: 1),
         '/settings': (context) => SettingsPage(),
         '/createCommunity': (context) => CreateCommunityPage(),
         '/manageCommunity': (context) => CommunityManagementPage(),

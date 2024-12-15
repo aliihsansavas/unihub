@@ -1,10 +1,6 @@
-name: UniHub
-description: "A new Flutter project."
+name: unihub
 
-flutter_icons:
-  android: true
-  ios: true
-  image_path: assets/logo.png
+description: "A new Flutter project."
 
 publish_to: 'none'
 
@@ -16,6 +12,7 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
+  http: ^1.2.1
   animated_text_kit: ^4.2.1 
   cupertino_icons: ^1.0.8
 
@@ -27,5 +24,5 @@ dev_dependencies:
 
 flutter:
   assets:
-    - assets/logo.png 
-  uses-material-design: true 
+    - assets/logo.png
+  uses-material-design: true
