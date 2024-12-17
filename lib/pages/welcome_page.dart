@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:animated_text_kit/animated_text_kit.dart';
+
 class WelcomePage extends StatefulWidget {
   final Function(bool) onThemeToggle;
 
@@ -18,7 +20,7 @@ class _WelcomePageState extends State<WelcomePage> with SingleTickerProviderStat
   @override
   void initState() {
     super.initState();
-
+    _loadThemePreference();
     _controller = AnimationController(
       vsync: this,
       duration: const Duration(seconds: 1),
@@ -29,10 +31,19 @@ class _WelcomePageState extends State<WelcomePage> with SingleTickerProviderStat
       end: const Color(0xFFCE93D8),
     ).animate(_controller);
 
-    _borderWidthAnimation = Tween<double>(
-      begin: 5,
-      end: 10,
-    ).animate(_controller);
+    _borderWidthAnimation = Tween<double>(begin: 5, end: 10).animate(_controller);
+  }
+
+  _loadThemePreference() async {
+    final prefs = await SharedPreferences.getInstance();
+    setState(() {
+      _isDarkMode = prefs.getBool('isDarkMode') ?? false;
+    });
+  }
+
+  _saveThemePreference(bool isDarkMode) async {
+    final prefs = await SharedPreferences.getInstance();
+    prefs.setBool('isDarkMode', isDarkMode);
   }
 
   @override
@@ -64,17 +75,19 @@ class _WelcomePageState extends State<WelcomePage> with SingleTickerProviderStat
                         ),
                         borderRadius: BorderRadius.circular(120),
                       ),
-                      child: _isDarkMode ? Image.asset(
-                        'assets/dark_mode.png',
-                        height: 250.0,
-                        width: 250.0,
-                        fit: BoxFit.cover,
-                      ) : Image.asset(
-                        'assets/light_mode.png',
-                        height: 250.0,
-                        width: 250.0,
-                        fit: BoxFit.cover,
-                      ),
+                      child: _isDarkMode
+                          ? Image.asset(
+                              'assets/dark_mode.png',
+                              height: 250.0,
+                              width: 250.0,
+                              fit: BoxFit.cover,
+                            )
+                          : Image.asset(
+                              'assets/light_mode.png',
+                              height: 250.0,
+                              width: 250.0,
+                              fit: BoxFit.cover,
+                            ),
                     ),
                   );
                 },
@@ -102,7 +115,7 @@ class _WelcomePageState extends State<WelcomePage> with SingleTickerProviderStat
                           textStyle: TextStyle(
                             fontSize: 40.0,
                             fontWeight: FontWeight.bold,
-                            color: const Color(0xFF1E88E5)
+                            color: const Color(0xFF1E88E5),
                           ),
                           speed: const Duration(milliseconds: 300),
                           cursor: '',
@@ -112,7 +125,7 @@ class _WelcomePageState extends State<WelcomePage> with SingleTickerProviderStat
                           textStyle: TextStyle(
                             fontSize: 40.0,
                             fontWeight: FontWeight.bold,
-                            color: const Color(0xFFCE93D8)
+                            color: const Color(0xFFCE93D8),
                           ),
                           speed: const Duration(milliseconds: 300),
                           cursor: '',
@@ -150,7 +163,7 @@ class _WelcomePageState extends State<WelcomePage> with SingleTickerProviderStat
                   padding: EdgeInsets.symmetric(vertical: 15, horizontal: 100),
                   textStyle: TextStyle(fontSize: 18),
                   backgroundColor: _isDarkMode ? const Color(0xFF1E88E5) : const Color(0xFF42A5F5),
-                  foregroundColor: _isDarkMode ? const Color(0xFFFFFFFF) :  const Color(0xFF212121),
+                  foregroundColor: _isDarkMode ? const Color(0xFFFFFFFF) : const Color(0xFF212121),
                   shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
                   elevation: 15,
                   shadowColor: _isDarkMode ? const Color(0xFF1E88E5) : const Color(0xFF42A5F5),
@@ -166,7 +179,7 @@ class _WelcomePageState extends State<WelcomePage> with SingleTickerProviderStat
                   padding: EdgeInsets.symmetric(vertical: 15, horizontal: 100),
                   textStyle: TextStyle(fontSize: 18),
                   backgroundColor: _isDarkMode ? const Color(0xFF7B1FA2) : const Color(0xFFCE93D8),
-                  foregroundColor: _isDarkMode ? const Color(0xFFFFFFFF) :  const Color(0xFF212121),
+                  foregroundColor: _isDarkMode ? const Color(0xFFFFFFFF) : const Color(0xFF212121),
                   shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
                   elevation: 15,
                   shadowColor: _isDarkMode ? const Color(0xFF7B1FA2) : const Color(0xFFCE93D8),
@@ -186,6 +199,7 @@ class _WelcomePageState extends State<WelcomePage> with SingleTickerProviderStat
                     _isDarkMode = !_isDarkMode;
                   });
                   widget.onThemeToggle(_isDarkMode);
+                  _saveThemePreference(_isDarkMode);
                 },
                 child: Container(
                   padding: EdgeInsets.all(8.0),
@@ -214,10 +228,9 @@ class _WelcomePageState extends State<WelcomePage> with SingleTickerProviderStat
                           padding: EdgeInsets.all(5.0),
                           child: Align(
                             alignment: _isDarkMode ? Alignment.centerRight : Alignment.centerLeft,
-                            child: Icon(
-                              _isDarkMode ? Icons.nightlight_round : Icons.wb_sunny,
-                              color: _isDarkMode ? Colors.white : Colors.yellow,
-                              size: 20,
+                            child: CircleAvatar(
+                              radius: 15,
+                              backgroundColor: Colors.white,
                             ),
                           ),
                         ),
