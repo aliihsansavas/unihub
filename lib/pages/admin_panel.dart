@@ -1,20 +1,21 @@
 import 'package:flutter/material.dart';
-import 'package:UniHub/pages/database_helper.dart'; // Database helper importu
-import 'package:UniHub/pages/community_panel_details.dart';
+import 'package:unihub/pages/database_helper.dart';
+import 'package:unihub/pages/community_panel_details.dart';
+
 class AdminPanel extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(title: Text("Admin Panel")),
       body: FutureBuilder<List<Map<String, dynamic>>>(
-        future: DatabaseHelper.instance.getAllCommunities(), // Veritabanından toplulukları al
+        future: DatabaseHelper.instance.getAllCommunities(),
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
-            return Center(child: CircularProgressIndicator()); // Veriler yükleniyor
+            return Center(child: CircularProgressIndicator());
           } else if (snapshot.hasError) {
-            return Center(child: Text('Hata: ${snapshot.error}')); // Hata durumu
+            return Center(child: Text('Hata: ${snapshot.error}'));
           } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
-            return Center(child: Text("Topluluk bulunmamaktadır")); // Veri yoksa
+            return Center(child: Text("Topluluk bulunmamaktadır"));
           } else {
             List<Map<String, dynamic>> communities = snapshot.data!;
 
@@ -23,16 +24,14 @@ class AdminPanel extends StatelessWidget {
               itemBuilder: (context, index) {
                 var community = communities[index];
                 return ListTile(
-                  title: Text(community['name']), // Topluluk adı
+                  title: Text(community['name']),
                   onTap: () {
-                    // Tıklanıldığında CommunityDetailsPage'e geçiş yap, ancak community parametresini opsiyonel gönder
                     Navigator.push(
                       context,
                       MaterialPageRoute(
-                        builder: (context) => CommunityPanelDetailsPage(community: community), // Seçilen topluluk gönderiliyor
+                        builder: (context) => CommunityPanelDetailsPage(community: community),
                       ),
                     );
-
                   },
                 );
               },
