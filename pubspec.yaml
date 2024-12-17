@@ -20,19 +20,10 @@ dependencies:
   http: ^1.2.1
   animated_text_kit: ^4.2.1 
   cupertino_icons: ^1.0.8
-<<<<<<< HEAD
   sqflite: ^2.0.2
   path: ^1.9.0
   image_picker: ^0.8.5+3
   path_provider: ^2.0.15
-=======
-  firebase_core: ^2.32.0
-  firebase_auth: ^4.8.0
-  cloud_firestore: ^4.10.0
-  firebase_messaging: ^14.0.0
-  firebase_analytics: ^10.0.0
-  image_picker: ^0.8.7+3
->>>>>>> a52e60cc2221fb0aa6574e6bb2b86ed01f18fbd5
 
 dev_dependencies:
   flutter_launcher_icons: ^0.9.2
