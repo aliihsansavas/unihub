@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:UniHub/pages/database_helper.dart'; // Veritabanı yardımcı sınıfınızın yolu
+import 'package:unihub/pages/database_helper.dart'; // Veritabanı yardımcı sınıfınızın yolu
 import 'package:path_provider/path_provider.dart';
 import 'package:image_picker/image_picker.dart'; // Resim seçimi için gerekli
 import 'dart:io';

@@ -1,4 +1,16 @@
 import 'package:flutter/material.dart';
+
+class ProfilePage extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(title: Text("Giriş Yap")),
+      body: Center(child: Text("Login Page")),
+    );
+  }
+}
+
+/*import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 
@@ -63,4 +75,4 @@ class _ProfilePageState extends State<ProfilePage> {
       body: Center(child: Text("Profile Page")),
     );
   }
-}
+}*/
