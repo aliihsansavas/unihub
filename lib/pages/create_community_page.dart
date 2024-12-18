@@ -1,5 +1,10 @@
 import 'package:flutter/material.dart';
+<<<<<<< HEAD
 import 'package:cloud_firestore/cloud_firestore.dart';
+=======
+import 'package:unihub/pages/database_helper.dart'; // Veritabanı yardımcı sınıfınızın yolu
+import 'package:path_provider/path_provider.dart';
+>>>>>>> fd2e47841017a6e8516874d7da8054eaf98ff679
 import 'package:image_picker/image_picker.dart';
 import 'dart:io';
 import 'package:path_provider/path_provider.dart';
@@ -13,6 +18,13 @@ class CreateCommunityPage extends StatefulWidget {
 class _CreateCommunityPageState extends State<CreateCommunityPage> {
   final TextEditingController _nameController = TextEditingController();
   final TextEditingController _descriptionController = TextEditingController();
+<<<<<<< HEAD
+=======
+  final TextEditingController _rulesController = TextEditingController();
+  String? _category;
+  File? _image;
+  final ImagePicker _picker = ImagePicker();
+>>>>>>> fd2e47841017a6e8516874d7da8054eaf98ff679
 
   List<String> _selectedCategories = [];
   final List<String> _categories = ['Education', 'Technology', 'Sports', 'Music', 'Art', 'Science'];
@@ -29,6 +41,7 @@ class _CreateCommunityPageState extends State<CreateCommunityPage> {
       });
     }
   }
+<<<<<<< HEAD
 
   void _addRule() {
     if (_rulesControllers.length < 10) {
@@ -37,12 +50,19 @@ class _CreateCommunityPageState extends State<CreateCommunityPage> {
       });
     }
   }
+=======
+>>>>>>> fd2e47841017a6e8516874d7da8054eaf98ff679
 
   Future<void> _saveCommunity(BuildContext context) async {
     if (_nameController.text.isEmpty ||
         _descriptionController.text.isEmpty ||
+<<<<<<< HEAD
         _selectedCategories.isEmpty ||
         _rulesControllers.every((controller) => controller.text.isEmpty) ||
+=======
+        _rulesController.text.isEmpty ||
+        _category == null ||
+>>>>>>> fd2e47841017a6e8516874d7da8054eaf98ff679
         _image == null) {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(content: Text("Lütfen tüm alanları doldurun ve bir resim seçin.")),
@@ -50,13 +70,21 @@ class _CreateCommunityPageState extends State<CreateCommunityPage> {
       return;
     }
 
+<<<<<<< HEAD
     // Resim kaydetme işlemi
     final directory = await getApplicationDocumentsDirectory();
     final communityImagesDir = Directory('${directory.path}/communityimages');
+=======
+    String imageName = basename(_image!.path);
+    final directory = await getApplicationDocumentsDirectory();
+    final communityImagesDir = Directory('${directory.path}/communityimages');
+
+>>>>>>> fd2e47841017a6e8516874d7da8054eaf98ff679
     if (!await communityImagesDir.exists()) {
       await communityImagesDir.create(recursive: true);
     }
 
+<<<<<<< HEAD
     String imageName = basename(_image!.path);
     final imagePath = '${communityImagesDir.path}/$imageName';
     await _image!.copy(imagePath);
@@ -81,6 +109,21 @@ class _CreateCommunityPageState extends State<CreateCommunityPage> {
     try {
       // Firebase Firestore'a veri ekle
       await FirebaseFirestore.instance.collection('communityinfo').add(communityData);
+=======
+    final imagePath = '${communityImagesDir.path}/$imageName';
+    await _image!.copy(imagePath);
+
+    Map<String, dynamic> communityData = {
+      'name': _nameController.text,
+      'description': _descriptionController.text,
+      'category': _category!,
+      'rules': _rulesController.text,
+      'image': imageName,
+    };
+
+    try {
+      await DatabaseHelper.instance.insert(communityData);
+>>>>>>> fd2e47841017a6e8516874d7da8054eaf98ff679
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(content: Text("Topluluk başarıyla oluşturuldu!")),
       );
@@ -107,6 +150,7 @@ class _CreateCommunityPageState extends State<CreateCommunityPage> {
       backgroundColor: Colors.white,
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(16.0),
+<<<<<<< HEAD
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -231,6 +275,51 @@ class _CreateCommunityPageState extends State<CreateCommunityPage> {
               ),
             ),
           ],
+=======
+        child: SingleChildScrollView(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text("Topluluk Adı", style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
+              TextField(controller: _nameController, decoration: InputDecoration(hintText: "Topluluk adı girin")),
+              SizedBox(height: 16),
+
+              Text("Topluluk Açıklaması", style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
+              TextField(controller: _descriptionController, decoration: InputDecoration(hintText: "Açıklama girin")),
+              SizedBox(height: 16),
+
+              Text("Topluluk Kategorisi", style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
+              DropdownButton<String>(
+                hint: Text("Bir kategori seçin"),
+                value: _category,
+                onChanged: (newValue) {
+                  setState(() {
+                    _category = newValue;
+                  });
+                },
+                items: _categories.map((category) {
+                  return DropdownMenuItem(value: category, child: Text(category));
+                }).toList(),
+              ),
+              SizedBox(height: 16),
+
+              Text("Topluluk Kuralları", style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
+              TextField(controller: _rulesController, decoration: InputDecoration(hintText: "Kurallar girin")),
+              SizedBox(height: 16),
+
+              ElevatedButton(onPressed: _pickImage, child: Text("Fotoğraf Seç")),
+              _image != null
+                  ? Image.file(_image!, height: 150, width: 150, fit: BoxFit.cover)
+                  : Text("Fotoğraf seçilmedi"),
+
+              SizedBox(height: 16),
+              ElevatedButton(
+                onPressed: () => _saveCommunity(context),
+                child: Text("Create Community"),
+              ),
+            ],
+          ),
+>>>>>>> fd2e47841017a6e8516874d7da8054eaf98ff679
         ),
       ),
     );

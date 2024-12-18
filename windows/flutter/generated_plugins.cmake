@@ -7,7 +7,10 @@ list(APPEND FLUTTER_PLUGIN_LIST
   file_selector_windows
   firebase_auth
   firebase_core
+<<<<<<< HEAD
   firebase_storage
+=======
+>>>>>>> fd2e47841017a6e8516874d7da8054eaf98ff679
 )
 
 list(APPEND FLUTTER_FFI_PLUGIN_LIST
