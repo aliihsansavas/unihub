@@ -73,4 +73,15 @@ class DatabaseHelper {
     final db = await _db;
     return await db.insert('community_info', community);
   }
+
+  // Topluluğun resim adını güncelle
+  Future<void> updateCommunityImage(int id, String imageName) async {
+    final db = await _db;
+    await db.update(
+      'communityinfo',
+      {'image': imageName},
+      where: 'id = ?',
+      whereArgs: [id],
+    );
+  }
 }

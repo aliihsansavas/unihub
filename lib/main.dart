@@ -41,18 +41,11 @@ class _UniHubAppState extends State<UniHubApp> {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'UniHub',
-<<<<<<< HEAD
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
-        visualDensity: VisualDensity.adaptivePlatformDensity,
-      ),
-      initialRoute: '/adminPanel',
-=======
       theme: ThemeData.light(),
       darkTheme: ThemeData.dark(),
       themeMode: _themeMode,
-      initialRoute: '/welcome',
->>>>>>> a52e60cc2221fb0aa6574e6bb2b86ed01f18fbd5
+      initialRoute: '/adminPanel',
+
       routes: {
         '/welcome': (context) => WelcomePage(onThemeToggle: _toggleTheme),
         '/signup': (context) => SignUpPage(),
