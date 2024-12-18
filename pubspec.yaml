@@ -22,16 +22,6 @@ dependencies:
   cupertino_icons: ^1.0.8
   sqflite: ^2.0.2
   path: ^1.9.0
-<<<<<<< HEAD
-  firebase_core: ^2.32.0
-  firebase_auth: ^4.8.0
-  firebase_storage: ^11.1.1
-  cloud_firestore: ^4.10.0
-  firebase_messaging: ^14.0.0
-  firebase_analytics: ^10.0.0
-  image_picker: ^0.8.7+3
-  path_provider: ^2.0.15
-=======
   image_picker: ^0.8.5+3
   path_provider: ^2.0.10
   firebase_core: ^3.2.0
@@ -40,7 +30,6 @@ dependencies:
   firebase_messaging: ^15.0.3
   firebase_analytics: ^11.2.0
   shared_preferences: ^2.0.15
->>>>>>> fd2e47841017a6e8516874d7da8054eaf98ff679
 
 dev_dependencies:
   flutter_launcher_icons: ^0.9.2
@@ -50,17 +39,7 @@ dev_dependencies:
 
 flutter:
   assets:
-<<<<<<< HEAD
-    - assets/setting.png
-    - assets/createcommunity.png
-    - assets/help.png
-    - assets/admin.png
-    - assets/light_mode.png
-    - assets/dark_mode.png
-  uses-material-design: true 
-=======
     - assets/light_mode.png
     - assets/dark_mode.png 
     - assets/user.png 
   uses-material-design: true
->>>>>>> fd2e47841017a6e8516874d7da8054eaf98ff679

@@ -66,12 +66,8 @@ class _UniHubAppState extends State<UniHubApp> {
       theme: ThemeData.light(),
       darkTheme: ThemeData.dark(),
       themeMode: _themeMode,
-<<<<<<< HEAD
       initialRoute: '/adminPanel',
 
-=======
-      initialRoute: '/splash',
->>>>>>> fd2e47841017a6e8516874d7da8054eaf98ff679
       routes: {
         '/splash': (context) => SplashScreen(onThemeToggle: _toggleTheme),
         '/welcome': (context) => WelcomePage(onThemeToggle: _toggleTheme),
