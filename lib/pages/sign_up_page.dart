@@ -20,7 +20,7 @@ class _SignUpPageState extends State<SignUpPage> {
   bool _isLoading = false;
   final _selectedInterests = <String>{};
   File? _imageFile;
-  final AuthService _authService = AuthService();
+  final AuthServiceSignup _authService = AuthServiceSignup();
 
   final List<String> _categories = [
     'Spor', 'Müzik', 'Sanat', 'Teknoloji', 'Doğa', 'Kitap', 'Gezi', 'Film', 'Yemek', 'Tiyatro',

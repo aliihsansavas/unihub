@@ -61,13 +61,28 @@ class _EmailVerificationPageState extends State<EmailVerification> {
         await user.sendEmailVerification();
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
-            content: Text(
-              'Doğrulama e-postası yeniden gönderildi!',
-              style: TextStyle(color: Colors.black),
+            content: Row(
+              children: [
+                Icon(
+                  Icons.check_circle,
+                  color: Colors.white,
+                ),
+                SizedBox(width: 10),
+                Expanded(
+                  child: Text(
+                    'Doğrulama e-postası yeniden gönderildi!',
+                    style: TextStyle(color: Colors.black),
+                  ),
+                ),
+              ],
             ),
             backgroundColor: Colors.green,
             duration: Duration(seconds: 2),
             behavior: SnackBarBehavior.floating,
+            margin: EdgeInsets.all(12),
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(10),
+            ),
           ),
         );
         startCountdown();
@@ -75,13 +90,28 @@ class _EmailVerificationPageState extends State<EmailVerification> {
     } catch (e) {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
-          content: Text(
-            'Doğrulama e-postası gönderilemedi!\nLütfen daha sonra tekrar deneyin.',
-            style: TextStyle(color: Colors.black),
+          content: Row(
+            children: [
+              Icon(
+                Icons.error,
+                color: Colors.white,
+              ),
+              SizedBox(width: 10),
+              Expanded(
+                child: Text(
+                  'Doğrulama e-postası gönderilemedi!\nLütfen daha sonra tekrar deneyin.',
+                  style: TextStyle(color: Colors.black),
+                ),
+              ),
+            ],
           ),
           backgroundColor: Colors.red,
           duration: Duration(seconds: 2),
           behavior: SnackBarBehavior.floating,
+          margin: EdgeInsets.all(12),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(10),
+          ),
         ),
       );
       startCountdown();
@@ -130,7 +160,7 @@ class _EmailVerificationPageState extends State<EmailVerification> {
               textAlign: TextAlign.center,
               style: TextStyle(
                 fontSize: 18,
-                color: isEmailVerified ? const Color.fromARGB(255, 36, 141, 39) : const Color.fromARGB(255, 175, 45, 35),
+                color: isEmailVerified ? const Color.fromARGB(255, 36, 141, 39) : const Color.fromARGB(255, 198, 52, 42),
               ),
             ),
             SizedBox(height: 20),

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:unihub/services/auth_service.dart';
 
 class LoginPage extends StatefulWidget {
   @override
@@ -7,7 +8,6 @@ class LoginPage extends StatefulWidget {
 }
 
 class _LoginPageState extends State<LoginPage> {
-  final FirebaseAuth _auth = FirebaseAuth.instance;
   final _formKey = GlobalKey<FormState>();
 
   TextEditingController _emailController = TextEditingController();
@@ -24,98 +24,94 @@ class _LoginPageState extends State<LoginPage> {
     _isDarkMode = Theme.of(context).brightness == Brightness.dark;
   }
 
-  Future<void> _checkEmailVerification(User user) async {
-    await user.reload();
-    if (!user.emailVerified) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text(
-            'Lütfen e-posta adresinizi doğrulayınız!',
-            style: TextStyle(color: Colors.black),
-          ),
-          backgroundColor: Colors.red,
-          duration: Duration(seconds: 2),
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(10),
-          ),
-          behavior: SnackBarBehavior.floating,
-          margin: EdgeInsets.all(12),
-        ),
-      );
-      Navigator.pushReplacementNamed(context, '/emailVerification');
-    } else {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text(
-            'Giriş Başarılı',
-            style: TextStyle(color: Colors.black),
-          ),
-          backgroundColor: Colors.green,
-          duration: Duration(seconds: 2),
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(10),
-          ),
-          behavior: SnackBarBehavior.floating,
-          margin: EdgeInsets.all(12),
-        ),
-      );
-      Navigator.pushNamedAndRemoveUntil(context, '/home', (Route<dynamic> route) => false);
-    }
-  }
+  final AuthServiceLogin _authService = AuthServiceLogin();
 
   Future<void> _login() async {
+    setState(() {
+      _errorMessage = null;
+    });
     if (!_formKey.currentState!.validate()) return;
 
-    final email = _emailController.text.trim();
+    final email = _emailController.text.trim().toLowerCase();
 
     if (!email.endsWith('@trakya.edu.tr') && email != 'unihubyonetim@gmail.com') {
       setState(() {
-        _errorMessage = 'Geçerli bir @trakya.edu.tr e-posta adresi girin.';
+        _errorMessage = 'Geçerli bir okul mail adresi giriniz.';
       });
       return;
     }
 
     setState(() {
       _isLoading = true;
-      _errorMessage = null;
     });
 
     try {
-      UserCredential userCredential = await _auth.signInWithEmailAndPassword(
-        email: email,
-        password: _passwordController.text,
-      );
+      User? user = await _authService.signInWithEmailPassword(
+          email, _passwordController.text);
 
-      User? user = userCredential.user;
       if (user != null) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text(
-              'Giriş Başarılı',
-              style: TextStyle(color: Colors.black),
+        await user.reload();
+        if (!user.emailVerified) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: Row(
+                children: [
+                  Icon(
+                    Icons.warning,
+                    color: Colors.white,
+                  ),
+                  SizedBox(width: 10),
+                  Text(
+                    'Lütfen e-posta adresinizi doğrulayınız!',
+                    style: TextStyle(color: Colors.black),
+                  ),
+                ],
+              ),
+              backgroundColor: Colors.red,
+              duration: Duration(seconds: 2),
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(10),
+              ),
+              behavior: SnackBarBehavior.floating,
+              margin: EdgeInsets.all(12),
             ),
-            backgroundColor: Colors.green,
-            duration: Duration(seconds: 2),
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(10),
-            ),
-            behavior: SnackBarBehavior.floating,
-            margin: EdgeInsets.all(12),
-          ),
-        );
-        if (email == 'unihubyonetim@gmail.com') {
-          Navigator.pushNamedAndRemoveUntil(context, '/adminPanel', (route) => false);
+          );
+          Navigator.pushReplacementNamed(context, '/emailVerification');
         } else {
-          Navigator.pushNamedAndRemoveUntil(context, '/home', (route) => false);
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: Row(
+                children: [
+                  Icon(
+                    Icons.check_circle,
+                    color: Colors.white,
+                  ),
+                  SizedBox(width: 10),
+                  Text(
+                    'Giriş Başarılı',
+                    style: TextStyle(color: Colors.black),
+                  ),
+                ],
+              ),
+              backgroundColor: Colors.green,
+              duration: Duration(seconds: 2),
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(10),
+              ),
+              behavior: SnackBarBehavior.floating,
+              margin: EdgeInsets.all(12),
+            ),
+          );
+          if (email == 'unihubyonetim@gmail.com') {
+            Navigator.pushNamedAndRemoveUntil(context, '/adminPanel', (route) => false);
+          } else {
+            Navigator.pushNamedAndRemoveUntil(context, '/home', (route) => false);
+          }
         }
       }
-    } on FirebaseAuthException catch (e) {
-      setState(() {
-        _errorMessage = _handleFirebaseAuthError(e);
-      });
     } catch (e) {
       setState(() {
-        _errorMessage = 'Bir hata oluştu. Lütfen tekrar deneyin.';
+        _errorMessage = e.toString();
       });
     } finally {
       setState(() {
@@ -124,21 +120,10 @@ class _LoginPageState extends State<LoginPage> {
     }
   }
 
-
-  String _handleFirebaseAuthError(FirebaseAuthException e) {
-    switch (e.code) {
-      case 'user-not-found':
-        return 'Bu e-posta ile kayıtlı kullanıcı bulunamadı.';
-      case 'wrong-password':
-        return 'Şifreniz yanlış. Lütfen tekrar deneyin.';
-      case 'invalid-email':
-        return 'Geçersiz e-posta adresi.';
-      default:
-        return 'Bir hata oluştu: ${e.message}';
-    }
-  }
-
   void _resetPassword() async {
+    setState(() {
+      _errorMessage = null;
+    });
     String email = _emailController.text.trim();
 
     if (email.isEmpty) {
@@ -149,24 +134,34 @@ class _LoginPageState extends State<LoginPage> {
     }
 
     try {
-      await _auth.sendPasswordResetEmail(email: email);
+      await _authService.resetPassword(email);
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
-          content: Text(
-            'Şifre sıfırlama e-postası gönderildi!',
-            style: TextStyle(color: Colors.black),
+          content: Row(
+            children: [
+              Icon(
+                Icons.email,
+                color: Colors.white,
+              ),
+              SizedBox(width: 10),
+              Text(
+                'Şifre sıfırlama e-postası gönderildi!',
+                style: TextStyle(color: Colors.black),
+              ),
+            ],
           ),
           backgroundColor: Colors.green,
           duration: Duration(seconds: 2),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(10),
+          ),
+          behavior: SnackBarBehavior.floating,
+          margin: EdgeInsets.all(12),
         ),
       );
-    } on FirebaseAuthException catch (e) {
+    } catch (e) {
       setState(() {
-        if (e.code == 'user-not-found') {
-          _errorMessage = 'Bu e-posta adresi ile kayıtlı bir kullanıcı bulunamadı.';
-        } else {
-          _errorMessage = 'Bir hata oluştu: ${e.message}';
-        }
+        _errorMessage = e.toString();
       });
     }
   }
@@ -224,7 +219,9 @@ class _LoginPageState extends State<LoginPage> {
                   Text(
                     _errorMessage!,
                     style: TextStyle(color: Colors.red, fontSize: 14),
-                  ),
+                  )
+                else
+                  SizedBox.shrink(),
                 SizedBox(height: 20),
                 _isLoading
                     ? Center(child: CircularProgressIndicator())
